@@ -1,5 +1,3 @@
-# ARPG
-Autoregressive Image Generation with Randomized Parallel Decoding
 # 🎮 ARPG: Autoregressive Image Generation with Randomized Parallel Decoding
 
 <p align="center">
