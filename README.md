@@ -1,7 +1,7 @@
 # 🎮 ARPG: Autoregressive Image Generation with Randomized Parallel Decoding
 
 <p align="center">
-<img src="assets/title.png" width=95%>
+<img src="assets/title.jpg" width=95%>
 <p>
 
 ## News
@@ -25,7 +25,8 @@ torchrun \
 
 ### Evaluation
 ```shell
-torchrun --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
+torchrun \
+--nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model GPT-XL \
 --gpt-ckpt YOUR_CKPT_PATH \
 --cfg-scale 6.0 \
