@@ -8,7 +8,8 @@
 <sup>1</sup> Westlake University,
 <sup>2</sup> Institute of Automation, Chinese Academy of Sciences
 
-[![arxiv paper](https://img.shields.io/badge/arXiv-Paper-red)]() [![checkpoints](https://img.shields.io/badge/HuggingFace-🤗-green)](https://huggingface.co/hp-l33/ARPG)
+
+[![arXiv](https://img.shields.io/badge/arXiv-2412.01827-A42C25?style=flat&logo=arXiv)](https://arxiv.org/abs/) [![Project](https://img.shields.io/badge/Project-Page-green?style=flat&logo=Google%20chrome&logoColor=green)](https://hp-l33.github.io/projects/arpg) [![HuggingFace](https://img.shields.io/badge/HuggingFace-Model-blue?style=flat&logo=HuggingFace)](https://huggingface.co/hp-l33/ARPG)
 
 </div>
 
@@ -17,14 +18,14 @@
 <p>
 
 ## News
-* **[2025-03-xx]**: The paper and code are released!
+* **2025-03-xx**: The paper and code are released!
 
 
 ## Introduction
 We introduce a novel autoregressive image generation framework named **ARPG**. This framework is capable of conducting **BERT-style masked modeling** by employing a **GPT-style causal architecture**. Consequently, it is able to generate images in parallel following a random token order and also provides support for the KV cache. 
-* 💪 High-Quality: ARPG achieves an FID of **1.94**
-* 🚀 High-Efficiency: ARPG delivers throughput 26 times greater than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)—while reducing memory consumption by over 75% compared to VAR.
-* 🔍 Generalization: ARPG supports zero-shot inference (e.g., inpainting and outpainting) and can be easily extended to controllable image generation.
+* 💪 **High-Quality:** **ARPG** achieves an FID of **1.94**
+* 🚀 **High-Efficiency:** **ARPG** delivers throughput **26 times faster** than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)—while reducing memory consumption by over **75%** compared to VAR.
+* 🔍 **Generalization:** **ARPG** supports **zero-shot inference** (e.g., inpainting and outpainting) and can be easily extended to **controllable generation**.
 
 
 ## Model Zoo
@@ -37,11 +38,10 @@ We provide the model weights pre-trained on ImageNet-1K 256*256.
 
 
 ## Getting Started
+### Preparation
+To accelerate the training process, we use the ImageNet dataset that has been pre-encoded into tokens, following the approach of [LlamaGen](https://github.com/FoundationVision/LlamaGen). You can also directly download the pre-processed [dataset](https://huggingface.co/ziqipang/RandAR/blob/main/imagenet-llamagen-adm-256_codes.tar) provided by [RandAR](https://github.com/ziqipang/RandAR).
 
 ### Training
-#### Preparation
-To accelerate the training process, we use the ImageNet dataset that has been pre-encoded into tokens, following the approach of [LlamaGen](https://github.com/FoundationVision/LlamaGen). You can also directly download the pre-processed [dataset](https://huggingface.co/ziqipang/RandAR/blob/main/imagenet-llamagen-adm-256_codes.tar) provided by [RandAR](https://github.com/ziqipang/RandAR).
-#### Training Script
 Taking ARPG-L as an example, the script for training using 8 A800-80GB GPUs is as follows:
 ```shell
 torchrun \
