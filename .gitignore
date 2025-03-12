@@ -169,3 +169,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+*.pth
+*.ckpt
+*.h5
+*.weights
+*.npz
+*.npy
+*.pt
+*.ipynb
