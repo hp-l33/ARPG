@@ -22,7 +22,7 @@ from utils.logger import create_logger
 from utils.distributed import init_distributed_mode
 from utils.ema import update_ema, requires_grad
 from dataset.build import build_dataset
-from models.arpg import GPT_models
+from models.arpg import ARPG_models
 
 
 def creat_optimizer(model, weight_decay, learning_rate, betas, logger):
@@ -116,7 +116,7 @@ def main(args):
         
     latent_size = args.image_size // args.downsample_size
     
-    model = GPT_models[args.gpt_model](
+    model = ARPG_models[args.gpt_model](
         vocab_size=args.vocab_size,
         block_size=latent_size ** 2,
         num_classes=args.num_classes,
@@ -283,9 +283,9 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--code-path", type=str, required=True)
-    parser.add_argument("--cloud-save-path", type=str, required=True, help='please specify a cloud disk path, if not, local path')
+    parser.add_argument("--cloud-save-path", type=str, required=True, default="./checkpoints", help='please specify a cloud disk path, if not, local path')
     parser.add_argument("--no-local-save", action='store_true', help='no save checkpoints to local path for limited disk volume')
-    parser.add_argument("--gpt-model", type=str, choices=list(GPT_models.keys()), default="GPT-B")
+    parser.add_argument("--gpt-model", type=str, choices=list(ARPG_models.keys()), default="GPT-B")
     parser.add_argument("--gpt-ckpt", type=str, default=None, help="ckpt path for resume training")
     parser.add_argument("--gpt-type", type=str, choices=['c2i', 't2i'], default="c2i", help="class-conditional or text-conditional")
     parser.add_argument("--vocab-size", type=int, default=16384, help="vocabulary size of visual tokenizer")

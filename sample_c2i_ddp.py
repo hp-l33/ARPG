@@ -18,7 +18,7 @@ import numpy as np
 import math
 import argparse
 
-from models.arpg import GPT_models
+from models.arpg import ARPG_models
 from models.vq_model import VQ_models
 
 
@@ -62,7 +62,7 @@ def main(args):
     # create and load gpt model
     precision = {'none': torch.float32, 'bf16': torch.bfloat16, 'fp16': torch.float16}[args.precision]
     latent_size = args.image_size // args.downsample_size
-    gpt_model = GPT_models[args.gpt_model](
+    gpt_model = ARPG_models[args.gpt_model](
         vocab_size=args.codebook_size,
         num_classes=args.num_classes,
     ).to(device=device, dtype=precision)
@@ -133,7 +133,7 @@ def main(args):
         cur_idx += 1
         qzshape = [len(c_indices), latent_size, latent_size, 256]
 
-        index_sample = gpt_model.generate_fast(c_indices, guidance_scale=args.cfg_scale, guidance_scale_pow=args.scale_pow, temperature=args.temperature, num_iter=args.step, schedule=args.schedule)
+        index_sample = gpt_model.generate(c_indices, guidance_scale=args.cfg_scale, temperature=args.temperature, num_iter=args.step, schedule=args.schedule)
 
         samples = vq_model.decode_code(index_sample.clone(), shape=(index_sample.shape[0], 8, 16, 16)) # output value is between [-1, 1]
         if args.image_size_eval != args.image_size:
@@ -157,7 +157,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gpt-model", type=str, choices=list(GPT_models.keys()), default="GPT-B")
+    parser.add_argument("--gpt-model", type=str, choices=list(ARPG_models.keys()), default="GPT-B")
     parser.add_argument("--gpt-ckpt", type=str, default=None)
     parser.add_argument("--gpt-type", type=str, choices=['c2i', 't2i'], default="c2i", help="class-conditional or text-conditional")
     parser.add_argument("--from-fsdp", action='store_true')
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument("--compile", action='store_true', default=True)
     parser.add_argument("--vq-model", type=str, choices=list(VQ_models.keys()), default="VQ-16")
     parser.add_argument("--vq-ckpt", type=str, default=None, help="ckpt path for vq model")
-    parser.add_argument("--codebook-size", type=int, default=1024, help="codebook size for vector quantization")
+    parser.add_argument("--codebook-size", type=int, default=16384, help="codebook size for vector quantization")
     parser.add_argument("--codebook-embed-dim", type=int, default=8, help="codebook dimension for vector quantization")
     parser.add_argument("--image-size", type=int, choices=[256, 384, 512], default=256)
     parser.add_argument("--image-size-eval", type=int, choices=[256, 384, 512], default=256)
