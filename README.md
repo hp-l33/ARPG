@@ -4,6 +4,7 @@
 <h1>Autoregressive Image Generation with Randomized Parallel Decoding</h3>
 
 [Haopeng Li](https://github.com/hp-l33)<sup>1,\*</sup>, Jinyue Yang<sup>2</sup>, [Guoqi Li](https://casialiguoqi.github.io)<sup>2</sup>, [Huan Wang](https://huanwang.tech)<sup>1,📧</sup>
+
 <sup>1</sup> Westlake University,
 <sup>2</sup> Institute of Automation, Chinese Academy of Sciences
 
