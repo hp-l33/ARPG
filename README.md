@@ -21,9 +21,14 @@
 
 
 ## Introduction
+We introduce a novel autoregressive image generation framework named **ARPG**. This framework is capable of conducting **BERT-style masked modeling** by employing a **GPT-style causal architecture**. Consequently, it is able to generate images in parallel following a random token order and also provides support for the KV cache. 
+* 💪 High-Quality: ARPG achieves an FID of **1.94**
+* 🚀 High-Efficiency: ARPG delivers throughput 26 times greater than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)—while reducing memory consumption by over 75% compared to VAR.
+* 🔍 Generalization: ARPG supports zero-shot inference (e.g., inpainting and outpainting) and can be easily extended to controllable image generation.
+
 
 ## Model Zoo
-We provide the model weights pre-trained on ImageNet-1K 256$\times$256.
+We provide the model weights pre-trained on ImageNet-1K 256*256.
 | Model | Param | CFG | Step | FID | IS | Weight |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: |
 | ARPG-L | 320 M | 4.5 | 64 | 2.44 | 287 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
@@ -82,4 +87,4 @@ If this work is helpful for your research, please give it a star or cite it:
 
 ## Acknowledgement
 
-Thanks to [LlamaGen](https://github.com/search?q=randar&type=repositories) for its open-source codebase. Appreciate [RandAR](https://github.com/search?q=randar&type=repositories) and [RAR](https://github.com/bytedance/1d-tokenizer/blob/main/README_RAR.md) for inspiring this work, and also thank [ControlAR](https://github.com/search?q=randar&type=repositories).
+Thanks to [LlamaGen](https://github.com/FoundationVision/LlamaGen) for its open-source codebase. Appreciate [RandAR](https://github.com/ziqipang/RandAR) and [RAR](https://github.com/bytedance/1d-tokenizer/blob/main/README_RAR.md) for inspiring this work, and also thank [ControlAR](https://github.com/hustvl/ControlAR).
