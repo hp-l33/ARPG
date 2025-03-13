@@ -23,9 +23,11 @@
 
 ## Introduction
 We introduce a novel autoregressive image generation framework named **ARPG**. This framework is capable of conducting **BERT-style masked modeling** by employing a **GPT-style causal architecture**. Consequently, it is able to generate images in parallel following a random token order and also provides support for the KV cache. 
-* 💪 **High-Quality:** **ARPG** achieves an FID of **1.94**
-* 🚀 **High-Efficiency:** **ARPG** delivers throughput **26 times faster** than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)—while reducing memory consumption by over **75%** compared to VAR.
-* 🔍 **Generalization:** **ARPG** supports **zero-shot inference** (e.g., inpainting and outpainting) and can be easily extended to **controllable generation**.
+* 💪 **ARPG** achieves an FID of **1.94**
+* 🚀 **ARPG** delivers throughput **26 times faster** than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)
+* ♻️ **ARPG** reducing memory consumption by over **75%** compared to [VAR](https://github.com/FoundationVision/VAR).
+* 🔍 **ARPG** supports **zero-shot inference** (e.g., inpainting and outpainting).
+* 🛠️ **ARPG** can be easily extended to **controllable generation**.
 
 
 <p align="center">
