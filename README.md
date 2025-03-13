@@ -38,7 +38,7 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 ## Model Zoo
 We provide the model weights pre-trained on ImageNet-1K 256*256.
 | Model | Param | CFG | Step | FID | IS | Weight |
-| --- | :---: | :---: | :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | ARPG-L | 320 M | 4.5 | 64 | 2.44 | 287 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
 | ARPG-XL | 719 M | 6.0 | 64 | 2.10 | 331 | [arpg_700m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_700m.pt) |
 | ARPG-XXL | 1.3 B | 7.5 | 64 | 1.94 | 340 | [arpg_1b.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_1b.pt) |
@@ -100,7 +100,7 @@ torchrun \
 --cfg-scale 7.5 \
 --step 64
 ```
-Note that the unlisted parameters (such as temperature, top-k, etc.) are all the default values set in `sample_c2i.py`.
+Note that the unlisted parameters (such as temperature, top-k, etc.) are all the default values set in `sample_c2i_ddp.py`.
 
 ## Citation
 If this work is helpful for your research, please give it a star or cite it:
