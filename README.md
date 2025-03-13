@@ -30,7 +30,7 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 
 <p align="center">
     <img src="./assets/speed.png" alt="fig1" width=47%>
-    <img src="./assets/mem.png" alt="fig2" width=46.4%>
+    <img src="./assets/mem.png" alt="fig2" width=47%>
 <p>
 
 
