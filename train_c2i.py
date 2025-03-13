@@ -1,7 +1,5 @@
-
-
-import warnings
-warnings.filterwarnings("ignore", category=FutureWarning)
+# Modified from:
+#   LlamaGen:   https://github.com/FoundationVision/LlamaGen/blob/main/autoregressive/models/gpt.py
 
 import torch
 torch.backends.cuda.matmul.allow_tf32 = True
@@ -128,7 +126,7 @@ def main(args):
         token_dropout_p=args.token_dropout_p,
     ).to(device)
     
-    logger.info(f"GPT Parameters: {sum(p.numel() for p in model.parameters()):,}")
+    logger.info(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
 
     if args.ema:
         ema = deepcopy(model).to(device)  # Create an EMA of the model for use after training

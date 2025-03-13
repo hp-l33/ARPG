@@ -1,9 +1,6 @@
 # Modified from:
 #   LlamaGen:   https://github.com/FoundationVision/LlamaGen/blob/main/autoregressive/models/gpt.py
 
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-
 import torch
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
@@ -178,8 +175,8 @@ if __name__ == "__main__":
     parser.add_argument("--per-proc-batch-size", type=int, default=32)
     parser.add_argument("--num-fid-samples", type=int, default=50000)
     parser.add_argument("--global-seed", type=int, default=0)
-    parser.add_argument("--top-k", type=int, default=0,help="top-k value to sample with")
     parser.add_argument("--temperature", type=float, default=1.0, help="temperature value to sample with")
+    parser.add_argument("--top-k", type=int, default=0,help="top-k value to sample with")
     parser.add_argument("--top-p", type=float, default=1.0, help="top-p value to sample with")
     parser.add_argument("--step", type=int, default=256, help="top-k value to sample with")
     parser.add_argument("--schedule", type=str, default='linear', help="top-k value to sample with")

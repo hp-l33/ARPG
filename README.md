@@ -30,7 +30,7 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 * 🛠️ **ARPG** can be easily extended to **controllable generation**.
 
 
-<p align="center">
+<p>
     <img src="./assets/speed_mem.png" alt="fig1" width=95%>
 <p>
 

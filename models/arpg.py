@@ -39,7 +39,6 @@ class ModelArgs(PretrainedConfig):
         dim: int = 4096,
         n_layer: int = 32,
         n_head: int = 32,
-        n_kv_head: Optional[int] = None,
         multiple_of: int = 256,  # make SwiGLU hidden layer size multiple of large power of 2
         ffn_dim_multiplier: Optional[float] = None,
         rope_base: float = 10000,
@@ -51,14 +50,11 @@ class ModelArgs(PretrainedConfig):
         ffn_dropout_p: float = 0.1,
         drop_path_rate: float = 0.0,
         num_classes: int = 1000,
-        caption_dim: int = 2048,
         class_dropout_prob: float = 0.1,
         model_type: str = 'c2i',
         vocab_size: int = 16384,
         cls_token_num: int = 1,
         block_size: int = 256,
-        max_batch_size: int = 32,
-        max_seq_len: int = 2048,
     ):
         self.dim = dim
         self.n_layer = n_layer
@@ -76,14 +72,11 @@ class ModelArgs(PretrainedConfig):
         self.drop_path_rate = drop_path_rate
 
         self.num_classes = num_classes
-        self.caption_dim = caption_dim
         self.class_dropout_prob = class_dropout_prob
         self.model_type = model_type
         self.vocab_size = vocab_size
         self.cls_token_num = cls_token_num
         self.block_size = block_size
-        self.max_batch_size = max_batch_size
-        self.max_seq_len = max_seq_len
 
 
 class RMSNorm(torch.nn.Module):
@@ -435,7 +428,7 @@ class Transformer(nn.Module):
 
     def forward(self, input_ids, condition, targets=None, debug=False):
         # shift class id and dropout for classifier-free guidance
-        condition = self.preprocess_condition(condition, cond_drop_prob=0.1)
+        condition = self.preprocess_condition(condition, cond_drop_prob=self.config.class_dropout_prob)
         
         # shuffle input
         shuffled_ids, orders = batch_seq_shuffle(input_ids)
@@ -475,15 +468,14 @@ class Transformer(nn.Module):
         # shift condition id
         condition = self.preprocess_condition(condition, cond_drop_prob=0.0)
 
-
-        sequences = []
-        
+        # generate a random order
         orders = torch.rand(256, device=device).argsort(dim=0) + 1
 
         last_pos = 0
         last_len = 1
         last_range = range(last_pos, last_pos + last_len)
         total_pred = seq_len
+        sequences = []
         
         self.setup_kv_cache(enable=True)
         for step in range(num_iter):
@@ -549,9 +541,6 @@ class Transformer(nn.Module):
         return sequences[:, orders.argsort(dim=0)]
 
 
-#################################################################################
-#                      Rotary Positional Embedding Functions                    #
-#################################################################################
 # https://github.com/pytorch-labs/gpt-fast/blob/main/model.py 
 def precompute_freqs_cis(seq_len: int, n_elem: int, base: int = 10000, cls_token_num=120):
     freqs = 1.0 / (base ** (torch.arange(0, n_elem, 2)[: (n_elem // 2)].float() / n_elem))
@@ -633,10 +622,6 @@ def top_k_top_p_filtering(
     return logits
 
 
-#################################################################################
-#                                GPT Configs                                    #
-#################################################################################
-### class-conditional
 def ARPG_XXL(**kwargs):
     return Transformer(ModelArgs(n_layer=48, n_head=24, dim=1536, **kwargs))
 
