@@ -18,7 +18,7 @@
 <p>
 
 ## News
-* **2025-03-xx**: The paper and code are released!
+* **2025-03-14**: The paper and code are released!
 
 
 ## Introduction
@@ -26,6 +26,12 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 * 💪 **High-Quality:** **ARPG** achieves an FID of **1.94**
 * 🚀 **High-Efficiency:** **ARPG** delivers throughput **26 times faster** than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)—while reducing memory consumption by over **75%** compared to VAR.
 * 🔍 **Generalization:** **ARPG** supports **zero-shot inference** (e.g., inpainting and outpainting) and can be easily extended to **controllable generation**.
+
+
+<p align="center">
+    <img src="./assets/speed.png" alt="fig1" width=47%>
+    <img src="./assets/mem.png" alt="fig2" width=46.4%>
+<p>
 
 
 ## Model Zoo
@@ -55,7 +61,7 @@ torchrun \
 Note that the learning rate is configured to be 1e-4 per 256 batch size. That is, if you set the batch size to 768, the lr should be adjusted to 3e-4.
 
 ### Evaluation
-1. Prepare ADM evaluation script
+1. Prepare ADM evaluation script.
 ```shell
 git clone https://github.com/openai/guided-diffusion.git
 
@@ -66,18 +72,43 @@ wget https://openaipublic.blob.core.windows.net/diffusion/jul-2021/ref_batches/i
   
 3. Reproduce the experimental results of ARPG:
 ```shell
+# ARPG-L, The FID should be close to 2.44.
+torchrun \
+--nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
+--gpt-model ARPG-L \
+--gpt-ckpt arpg_300m.pt \
+--vq-ckpt vq_ds16_c2i.pt \
+--cfg-scale 4.5 \
+--temperature 1.0 \
+--top-p 1.0 \
+--top-k 0 \
+--step 64
+
+# ARPG-XL, The FID should be close to 2.10.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-XL \
---gpt-ckpt YOUR_CKPT_PATH \
+--gpt-ckpt arpg_700m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 6.0 \
 --temperature 1.0 \
---top-k 0 \
 --top-p 1.0 \
+--top-k 0 \
+--step 64
+
+# ARPG-XXL, The FID should be close to 1.94.
+torchrun \
+--nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
+--gpt-model ARPG-XXL \
+--gpt-ckpt arpg_1b.pt \
+--vq-ckpt vq_ds16_c2i.pt \
+--cfg-scale 7.5 \
+--temperature 1.0 \
+--top-p 1.0 \
+--top-k 0 \
 --step 64
 ```
-Note that models of different scales require different `cfg-scale` parameter configurations. Please refer to the table in the Model Zoo.
+
 
 ## Citation
 If this work is helpful for your research, please give it a star or cite it:
