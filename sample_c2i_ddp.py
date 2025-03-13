@@ -154,7 +154,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--gpt-model", type=str, choices=list(ARPG_models.keys()), default="GPT-B")
+    parser.add_argument("--gpt-model", type=str, choices=list(ARPG_models.keys()), default="ARPG-L")
     parser.add_argument("--gpt-ckpt", type=str, default=None)
     parser.add_argument("--gpt-type", type=str, choices=['c2i', 't2i'], default="c2i", help="class-conditional or text-conditional")
     parser.add_argument("--from-fsdp", action='store_true')
