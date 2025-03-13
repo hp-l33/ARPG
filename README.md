@@ -46,7 +46,7 @@ We provide the model weights pre-trained on ImageNet-1K 256*256.
 
 ## Getting Started
 ### Preparation
-To accelerate the training process, we use the ImageNet dataset that has been pre-encoded into tokens, following the approach of [LlamaGen](https://github.com/FoundationVision/LlamaGen). You can also directly download the pre-processed [dataset](https://huggingface.co/ziqipang/RandAR/blob/main/imagenet-llamagen-adm-256_codes.tar) provided by [RandAR](https://github.com/ziqipang/RandAR).
+To accelerate the training process, we use the ImageNet dataset that has been pre-encoded into tokens, following the approach of [LlamaGen](https://github.com/FoundationVision/LlamaGen). You can directly download the pre-processed [dataset](https://huggingface.co/ziqipang/RandAR/blob/main/imagenet-llamagen-adm-256_codes.tar) provided by [RandAR](https://github.com/ziqipang/RandAR).
 
 ### Training
 Taking ARPG-L as an example, the script for training using 8 A800-80GB GPUs is as follows:
@@ -73,43 +73,34 @@ wget https://openaipublic.blob.core.windows.net/diffusion/jul-2021/ref_batches/i
   
 3. Reproduce the experimental results of ARPG:
 ```shell
-# ARPG-L, The FID should be close to 2.44.
+# ARPG-L. The FID should be close to 2.44.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-L \
 --gpt-ckpt arpg_300m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 4.5 \
---temperature 1.0 \
---top-p 1.0 \
---top-k 0 \
 --step 64
 
-# ARPG-XL, The FID should be close to 2.10.
+# ARPG-XL. The FID should be close to 2.10.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-XL \
 --gpt-ckpt arpg_700m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 6.0 \
---temperature 1.0 \
---top-p 1.0 \
---top-k 0 \
 --step 64
 
-# ARPG-XXL, The FID should be close to 1.94.
+# ARPG-XXL. The FID should be close to 1.94.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-XXL \
 --gpt-ckpt arpg_1b.pt \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 7.5 \
---temperature 1.0 \
---top-p 1.0 \
---top-k 0 \
 --step 64
 ```
-
+Note that the unlisted parameters (such as temperature, top-k, etc.) are all the default values set in `sample_c2i.py`.
 
 ## Citation
 If this work is helpful for your research, please give it a star or cite it:
