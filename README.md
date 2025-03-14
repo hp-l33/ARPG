@@ -39,7 +39,7 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 We provide the model weights pre-trained on ImageNet-1K 256*256.
 | Model | Param | CFG | Step | FID | IS | Weight |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| ARPG-L | 320 M | 4.5 | 64 | 2.43 | 294 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
+| ARPG-L | 320 M | 5.0 | 64 | 2.43 | 294 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
 | ARPG-XL | 719 M | 6.0 | 64 | 2.10 | 331 | [arpg_700m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_700m.pt) |
 | ARPG-XXL | 1.3 B | 7.5 | 64 | 1.94 | 340 | [arpg_1b.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_1b.pt) |
 
@@ -82,7 +82,8 @@ torchrun \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 5.0 \
 --step 64
-
+```
+```shell
 # ARPG-XL. The FID should be close to 2.10.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
@@ -91,7 +92,8 @@ torchrun \
 --vq-ckpt vq_ds16_c2i.pt \
 --cfg-scale 6.0 \
 --step 64
-
+```
+```shell
 # ARPG-XXL. The FID should be close to 1.94.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
