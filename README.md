@@ -9,7 +9,7 @@
 <sup>2</sup> Institute of Automation, Chinese Academy of Sciences
 
 
-[![arXiv](https://img.shields.io/badge/arXiv-1234-A42C25?style=flat&logo=arXiv)](https://arxiv.org/abs/) [![Project](https://img.shields.io/badge/Project-Page-green?style=flat&logo=Google%20chrome&logoColor=green)](https://hp-l33.github.io/projects/arpg) [![HuggingFace](https://img.shields.io/badge/HuggingFace-Model-blue?style=flat&logo=HuggingFace)](https://huggingface.co/hp-l33/ARPG)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.10568-A42C25?style=flat&logo=arXiv)](https://arxiv.org/abs/2503.10568) [![Project](https://img.shields.io/badge/Project-Page-green?style=flat&logo=Google%20chrome&logoColor=green)](https://hp-l33.github.io/projects/arpg) [![HuggingFace](https://img.shields.io/badge/HuggingFace-Model-blue?style=flat&logo=HuggingFace)](https://huggingface.co/hp-l33/ARPG)
 
 </div>
 
@@ -79,7 +79,7 @@ torchrun \
 --gpt-model ARPG-L \
 --gpt-ckpt arpg_300m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
---cfg-scale 4.5 \
+--cfg-scale 5.0 \
 --step 64
 
 # ARPG-XL. The FID should be close to 2.10.
@@ -105,7 +105,12 @@ Note that the unlisted parameters (such as temperature, top-k, etc.) are all the
 ## Citation
 If this work is helpful for your research, please give it a star or cite it:
 ```bibtex
-
+@article{li2025autoregressive,
+    title={Autoregressive Image Generation with Randomized Parallel Decoding},
+    author={Haopeng Li and Jinyue Yang and Guoqi Li and Huan Wang},
+    journal={arXiv preprint arXiv:2503.10568},
+    year={2025}
+}
 ```
 
 ## Acknowledgement
