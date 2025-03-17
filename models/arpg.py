@@ -1,5 +1,5 @@
 # Modified from:
-#   LlamaGen:   https://github.com/FoundationVision/LlamaGen/blob/main/autoregressive/models/gpt.py
+#   LlamaGen:   https://github.com/FoundationVision/LlamaGen/
 
 import math
 import numpy as np
