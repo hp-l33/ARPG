@@ -18,6 +18,7 @@
 <p>
 
 ## News
+* **2025-03-25**: Add the sampling arccos schedule.
 * **2025-03-14**: The paper and code are released!
 
 
@@ -37,12 +38,11 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 
 ## Model Zoo
 We provide the model weights pre-trained on ImageNet-1K 256*256.
-| Model | Param | CFG | Step | FID | IS | Weight |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| ARPG-L | 320 M | 5.0 | 64 | 2.43 | 294 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
-| ARPG-XL | 719 M | 6.0 | 64 | 2.10 | 331 | [arpg_700m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_700m.pt) |
-| ARPG-XXL | 1.3 B | 7.5 | 64 | 1.94 | 340 | [arpg_1b.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_1b.pt) |
-
+| Model | Param | Schedule | CFG | Step | FID | IS | Weight |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| ARPG-L | 320 M | cosine | 4.5 | 64 | 2.44 | 292 | [arpg_300m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_300m.pt) |
+| ARPG-XL | 719 M | cosine | 6.0 | 64 | 2.10 | 331 | [arpg_700m.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_700m.pt) |
+| ARPG-XXL | 1.3 B | cosine | 7.5 | 64 | 1.94 | 340 | [arpg_1b.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_1b.pt) |
 
 ## Getting Started
 ### Preparation
@@ -71,35 +71,39 @@ wget https://openaipublic.blob.core.windows.net/diffusion/jul-2021/ref_batches/i
 2. Download the [pre-trained weights](https://huggingface.co/FoundationVision/LlamaGen/resolve/main/vq_ds16_c2i.pt) of [LlamaGen](https://github.com/FoundationVision/LlamaGen)'s tokenizer.
 
   
-3. Reproduce the experimental results of ARPG:
+3. Reproduce the experimental results of ARPG. 
+
 ```shell
-# ARPG-L. The FID should be close to 2.43.
-# PS: cfg-scale=5 outperforms the paper's 4.5 setting.
+# PS: arccos schedule outperforms the paper's cosine setting.
+# ARPG-L. The FID should be close to 2.38.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-L \
 --gpt-ckpt arpg_300m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
+--sample-schedule arccos \
 --cfg-scale 5.0 \
 --step 64
 ```
 ```shell
-# ARPG-XL. The FID should be close to 2.10.
+# ARPG-XL. The FID should be close to 2.02.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-XL \
 --gpt-ckpt arpg_700m.pt \
 --vq-ckpt vq_ds16_c2i.pt \
+--sample-schedule arccos \
 --cfg-scale 6.0 \
 --step 64
 ```
 ```shell
-# ARPG-XXL. The FID should be close to 1.94.
+# ARPG-XXL. The FID should be close to 1.91.
 torchrun \
 --nnodes=1 --nproc_per_node=8 sample_c2i_ddp.py \
 --gpt-model ARPG-XXL \
 --gpt-ckpt arpg_1b.pt \
 --vq-ckpt vq_ds16_c2i.pt \
+--sample-schedule arccos \
 --cfg-scale 7.5 \
 --step 64
 ```

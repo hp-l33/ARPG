@@ -1,5 +1,6 @@
 # Modified from:
 #   LlamaGen:   https://github.com/FoundationVision/LlamaGen/
+#   YOCO:       https://github.com/microsoft/unilm/tree/master/YOCO
 
 import math
 import numpy as np
@@ -454,10 +455,11 @@ class Transformer(nn.Module):
         self,
         condition,
         guidance_scale=4.0,
-        schedule='linear',
+        cfg_schedule='linear',
+        sample_schedule='arccos',
         temperature=1.0,
         top_k=0,
-        top_p=1.0,
+        top_p=1,
         seq_len=256,
         num_iter=64,
     ):
@@ -472,28 +474,31 @@ class Transformer(nn.Module):
         orders = torch.rand(256, device=device).argsort(dim=0) + 1
 
         last_pos = 0
-        last_len = 1
-        last_range = range(last_pos, last_pos + last_len)
-        total_pred = seq_len
+        last_range = range(0, 1)  # for class token, hardcode
         sequences = []
         
         self.setup_kv_cache(enable=True)
         for step in range(num_iter):
-            num_pred = (1.0 - np.cos(math.pi / 2.0 * (step + 1) / num_iter)) * 256 + 1
-            num_pred = min(int(num_pred), 256)
-            num_pred = num_pred - last_pos - last_len
-            num_pred = max(num_pred, 1)
-            num_pred = min(num_pred, 256 - last_pos - last_len)
-            total_pred -= num_pred
+            if sample_schedule == 'arccos':
+                mask_ratio = np.arccos(1. * (step + 1) / num_iter) / (math.pi * 0.5)
+            elif sample_schedule == 'cosine':
+                mask_ratio = np.cos(math.pi / 2. * (step + 1) / num_iter)
+            else:
+                raise NotImplementedError
+
+            mask_len = int(seq_len * mask_ratio)
+            mask_len = max(1, min(seq_len - last_pos - 1, mask_len))
+            
+            num_pred = seq_len - last_pos - mask_len
             if step == num_iter - 1:
-                num_pred += total_pred
+                num_pred = seq_len - last_pos
 
-            next_range = orders[range(last_pos + last_len - 1, last_pos + last_len + num_pred - 1)]
-
-            if schedule == 'linear':
-                # cfg_scale = 1.0 + (guidance_scale - 1.0) * last_pos / seq_len
-                cfg_scale = 1.0 + (guidance_scale - 1.0) * (last_pos + last_len) / seq_len
-            elif schedule == 'constant':
+            next_range = orders[range(last_pos, last_pos + num_pred)]
+            last_pos += num_pred
+            
+            if cfg_schedule == 'linear':
+                cfg_scale = 1.0 + (guidance_scale - 1.0) * last_pos / seq_len
+            elif cfg_schedule == 'constant':
                 cfg_scale = guidance_scale
             else:
                 raise NotImplementedError
@@ -507,7 +512,6 @@ class Transformer(nn.Module):
                 freqs_cis_[:, last_range, ...],
                 freqs_cis_[:, next_range, ...]], dim=1
             )
-            
             if guidance_scale != 0:
                 if step == 0:
                     input_ids = torch.cat([condition, torch.full_like(condition, self.none_conds_id)], dim=0)
@@ -515,13 +519,12 @@ class Transformer(nn.Module):
                     input_ids = torch.cat([sequences[-1], sequences[-1]], dim=0)
 
                 logits = self.forward_shared(input_ids, freqs_cis, num_pred)
-                
                 cond_logits, uncond_logits = logits[:num_samples], logits[num_samples:]
                 logits = uncond_logits + (cond_logits - uncond_logits) * cfg_scale
             else:
                 raise NotImplementedError
 
-            # keep the logit of last token
+            # keep the logits of last n-tokens
             logits = logits[:, -num_pred:] / max(temperature, 1e-5)
 
             if top_k > 0 or top_p < 1.0:
@@ -531,8 +534,6 @@ class Transformer(nn.Module):
             sampled = torch.multinomial(probs.flatten(0, 1), num_samples=1)
             sequences.append(sampled.reshape(num_samples, -1))
             
-            last_pos = last_pos + last_len
-            last_len = num_pred
             last_range = next_range
             
         self.setup_kv_cache(enable=False)

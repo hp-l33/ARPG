@@ -97,7 +97,8 @@ def main(args):
         ckpt_string_name = os.path.basename(args.gpt_ckpt).replace(".pth", "").replace(".pt", "")
     folder_name = f"{model_string_name}-{ckpt_string_name}-size-{args.image_size}-size-{args.image_size_eval}-{args.vq_model}-" \
                   f"topk-{args.top_k}-topp-{args.top_p}-temperature-{args.temperature}-" \
-                  f"cfg-{args.cfg_scale}-schedule-{args.schedule}-step-{args.step}-seed-{args.global_seed}"
+                  f"cfg-{args.cfg_scale}-cfg-schedule-{args.cfg_schedule}-" \
+                  f"sample-schedule-{args.sample_schedule}-step-{args.step}-seed-{args.global_seed}"
     sample_folder_dir = f"{args.sample_dir}/{folder_name}"
     if rank == 0:
         os.makedirs(sample_folder_dir, exist_ok=True)
@@ -130,7 +131,7 @@ def main(args):
         cur_idx += 1
         qzshape = [len(c_indices), latent_size, latent_size, 256]
 
-        index_sample = gpt_model.generate(c_indices, guidance_scale=args.cfg_scale, temperature=args.temperature, num_iter=args.step, schedule=args.schedule)
+        index_sample = gpt_model.generate(c_indices, guidance_scale=args.cfg_scale, temperature=args.temperature, num_iter=args.step, cfg_schedule=args.cfg_schedule, sample_schedule=args.sample_schedule)
 
         samples = vq_model.decode_code(index_sample.clone(), shape=(index_sample.shape[0], 8, 16, 16)) # output value is between [-1, 1]
         if args.image_size_eval != args.image_size:
@@ -179,6 +180,7 @@ if __name__ == "__main__":
     parser.add_argument("--top-k", type=int, default=0,help="top-k value to sample with")
     parser.add_argument("--top-p", type=float, default=1.0, help="top-p value to sample with")
     parser.add_argument("--step", type=int, default=256, help="top-k value to sample with")
-    parser.add_argument("--schedule", type=str, default='linear', help="top-k value to sample with")
+    parser.add_argument("--cfg-schedule", type=str, default='linear', choices=['linear', 'constant'], help="top-k value to sample with")
+    parser.add_argument("--sample-schedule", type=str, default='arccos', choices=['arccos', 'cosine'], help="top-k value to sample with")
     args = parser.parse_args()
     main(args)
