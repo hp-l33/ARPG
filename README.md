@@ -50,12 +50,10 @@ You can easily play ARPG using the HuggingFace ``DiffusionPipeline``.
 ```python
 from diffusers import DiffusionPipeline
 
-# load the pretrained model
 pipeline = DiffusionPipeline.from_pretrained("hp-l33/ARPG", custom_pipeline="hp-l33/ARPG")
 
 class_labels = [207, 360, 388, 113, 355, 980, 323, 979]
 
-# generate an image with the model
 generated_image = pipeline(
     model_type="ARPG-XL",       # choose from 'ARPG-L', 'ARPG-XL', or 'ARPG-XXL'
     seed=0,                     # set a seed for reproducibility
@@ -67,10 +65,9 @@ generated_image = pipeline(
     sample_schedule = "arccos", # choose between 'arccos' (suggested) and 'cosine'
 )
 
-# display the generated image
 generated_image.show()
 ```
-If you want to **train** or **reproduce the results** of ARPG, please refer to [Getting Started](GETTING_STARTED.md). 
+If you want to train or reproduce the results of ARPG, please refer to [Getting Started](GETTING_STARTED.md). 
 
 
 ## Citation
