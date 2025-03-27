@@ -18,6 +18,7 @@
 <p>
 
 ## News
+* **2025-03-27**: Add HuggingFace integration to ARPG.
 * **2025-03-25**: Add the sampling arccos schedule.
 * **2025-03-14**: The paper and code are released!
 
@@ -50,18 +51,20 @@ You can easily play ARPG using the HuggingFace ``DiffusionPipeline``.
 from diffusers import DiffusionPipeline
 
 # load the pretrained model
-pipeline = DiffusionPipeline.from_pretrained("hp-l33/ARPG", trust_remote_code=True, custom_pipeline="hp-l33/ARPG")
+pipeline = DiffusionPipeline.from_pretrained("hp-l33/ARPG", custom_pipeline="hp-l33/ARPG")
+
+class_labels = [207, 360, 388, 113, 355, 980, 323, 979]
 
 # generate an image with the model
 generated_image = pipeline(
-    model_type="ARPG-XL", # choose from 'ARPG-L', 'ARPG-XL', or 'ARPG-XXL'
-    seed=0,               # set a seed for reproducibility
-    num_steps=64,         # number of autoregressive steps
-    class_labels=[207, 360, 388, 113, 355, 980, 323, 979],  # provide valid ImageNet class labels
-    cfg_scale=4,          # classifier-free guidance scale
-    output_dir="./images",        # directory to save generated images
-    cfg_schedule = "constant",    # choose between 'constant' (suggested) and 'linear'
-    sample_schedule = "arccos",   # choose between 'arccos' (suggested) and 'cosine'
+    model_type="ARPG-XL",       # choose from 'ARPG-L', 'ARPG-XL', or 'ARPG-XXL'
+    seed=0,                     # set a seed for reproducibility
+    num_steps=64,               # number of autoregressive steps
+    class_labels=class_labels,  # provide valid ImageNet class labels
+    cfg_scale=4,                # classifier-free guidance scale
+    output_dir="./images",      # directory to save generated images
+    cfg_schedule = "constant",  # choose between 'constant' (suggested) and 'linear'
+    sample_schedule = "arccos", # choose between 'arccos' (suggested) and 'cosine'
 )
 
 # display the generated image
