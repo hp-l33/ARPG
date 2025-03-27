@@ -17,7 +17,7 @@
 <img src="assets/title.jpg" width=95%>
 <p>
 
-## News
+## 🔥 News
 * **2025-03-27**: Add HuggingFace integration to ARPG.
 * **2025-03-25**: Add the sampling arccos schedule.
 * **2025-03-14**: The paper and code are released!
@@ -45,7 +45,7 @@ We provide the model weights pre-trained on ImageNet-1K 256*256.
 | ARPG-XXL | 1.3 B | cosine | 7.5 | 64 | 1.94 | 340 | [arpg_1b.pt](https://huggingface.co/hp-l33/ARPG/blob/main/arpg_1b.pt) |
 
 
-## Quick Start
+## 🎮 Quick Start
 You can easily play ARPG using the HuggingFace ``DiffusionPipeline``.
 ```python
 from diffusers import DiffusionPipeline
@@ -61,8 +61,8 @@ generated_image = pipeline(
     class_labels=class_labels,  # provide valid ImageNet class labels
     cfg_scale=4,                # classifier-free guidance scale
     output_dir="./images",      # directory to save generated images
-    cfg_schedule = "constant",  # choose between 'constant' (suggested) and 'linear'
-    sample_schedule = "arccos", # choose between 'arccos' (suggested) and 'cosine'
+    cfg_schedule="constant",    # choose between 'constant' (suggested) and 'linear'
+    sample_schedule="arccos",   # choose between 'arccos' (suggested) and 'cosine'
 )
 
 generated_image.show()
