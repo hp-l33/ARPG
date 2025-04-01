@@ -471,7 +471,7 @@ class Transformer(nn.Module):
         condition = self.preprocess_condition(condition, cond_drop_prob=0.0)
 
         # generate a random order
-        orders = torch.rand(256, device=device).argsort(dim=0) + 1
+        orders = torch.rand(seq_len, device=device).argsort(dim=0) + 1
 
         last_pos = 0
         last_range = range(0, 1)  # for class token, hardcode
