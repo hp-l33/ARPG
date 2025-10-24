@@ -32,10 +32,6 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 * 🛠️ **ARPG** can be easily extended to **controllable generation**.
 
 
-<p>
-    <img src="./assets/speed_mem.png" alt="fig1" width=95%>
-<p>
-
 ## Model Zoo
 We provide the model weights pre-trained on ImageNet-1K 256*256.
 | Model | Param | Schedule | CFG | Step | FID | IS | Weight |
