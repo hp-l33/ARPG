@@ -18,6 +18,7 @@
 <p>
 
 ## 🔥 News
+* **2026-01-26**: Our paper has been accepted by ICLR 2026. 🎉🎉🎉
 * **2025-03-27**: Add HuggingFace integration to ARPG.
 * **2025-03-25**: Add the sampling arccos schedule.
 * **2025-03-14**: The paper and code are released!
