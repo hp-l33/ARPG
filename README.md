@@ -24,7 +24,7 @@
 * **2025-03-14**: The paper and code are released!
 
 
-## Introduction
+## 📖 Introduction
 We introduce a novel autoregressive image generation framework named **ARPG**. This framework is capable of conducting **BERT-style masked modeling** by employing a **GPT-style causal architecture**. Consequently, it is able to generate images in parallel following a random token order and also provides support for the KV cache. 
 * 💪 **ARPG** achieves an FID of **1.94**
 * 🚀 **ARPG** delivers throughput **26 times faster** than [LlamaGen](https://github.com/FoundationVision/LlamaGen)—nearly matching [VAR](https://github.com/FoundationVision/VAR)
@@ -33,7 +33,7 @@ We introduce a novel autoregressive image generation framework named **ARPG**. T
 * 🛠️ **ARPG** can be easily extended to **controllable generation**.
 
 
-## Model Zoo
+## 🤗 Model Zoo
 We provide the model weights pre-trained on ImageNet-1K 256*256.
 | Model | Param | Schedule | CFG | Step | FID | IS | Weight |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -67,17 +67,17 @@ generated_image.show()
 If you want to train or reproduce the results of ARPG, please refer to [Getting Started](GETTING_STARTED.md). 
 
 
-## Citation
+## 🔗 Bibtex
 If this work is helpful for your research, please give it a star or cite it:
 ```bibtex
-@article{li2025autoregressive,
+@inproceedings{li2026autoregressive,
     title={Autoregressive Image Generation with Randomized Parallel Decoding},
     author={Haopeng Li and Jinyue Yang and Guoqi Li and Huan Wang},
-    journal={arXiv preprint arXiv:2503.10568},
-    year={2025}
+    booktitle={The Fourteenth International Conference on Learning Representations},
+    year={2026}
 }
 ```
 
-## Acknowledgement
+## 🤝 Acknowledgement
 
 Thanks to [LlamaGen](https://github.com/FoundationVision/LlamaGen) for its open-source codebase. Appreciate [RandAR](https://github.com/ziqipang/RandAR) and [RAR](https://github.com/bytedance/1d-tokenizer/blob/main/README_RAR.md) for inspiring this work, and also thank [ControlAR](https://github.com/hustvl/ControlAR).
